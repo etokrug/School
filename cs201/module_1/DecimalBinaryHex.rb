@@ -1,3 +1,11 @@
+=begin
+# Created:      10/4/2015
+# Creator:      William Brown
+# Purpose:      Quick way to memorize Decimal, Binary, and Hex forms"
+# Notes:        I'm aware this is jumbled crap code - it was just to 
+#               work something out quickly for one of my classes
+#
+=end
 def memorize
     dbhArray = [
         ['0', '0000', '0'],
