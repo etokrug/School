@@ -28,13 +28,13 @@ def memorize
 
     namesArray = ['Decimal', 'Binary', 'Hex']
 
-   arrRand = dbhArray[rand(16)]
-   fromRand = rand(4)
-   toRand = rand(4)
+   arrRand = dbhArray[rand(15)]
+   fromRand = rand(3)
+   toRand = rand(3)
 
 
    while toRand == fromRand do
-       toRand = rand(4)
+       toRand = rand(3)
    end
    
    puts "Please convert the #{namesArray[fromRand]}: #{arrRand[fromRand]} to #{namesArray[toRand]} format: "
