@@ -46,7 +46,7 @@ int main() {
     int i = 1;
     while(remainder > 0){
         allNumbers[i++] = remainder % 2;
-        remainder = remainder / 2;
+        remainder /= 2;
     }
 
     // Standard output
