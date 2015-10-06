@@ -25,7 +25,6 @@ int main() {
     // Main set of declarations here
     int decimal;
     int remainder;
-    int quotient;
 
     // This is the array that will end up (I hope) holding the full binary number
     // I set it to 32 to represent a 32 bit system - I think
@@ -37,7 +36,7 @@ int main() {
 
     // This sets the quotient equal to the decimal number.
     // This is done so that it can be later manipulated into the correct number.
-    quotient = decimal;
+    remainder = decimal;
 
     // This loop, although you stated pretty clearly what it should do
     // gave me a lot of problems and I had to search for some additional
@@ -45,9 +44,9 @@ int main() {
     // is not something I'm used to on any level and I'm kind of two weeks
     // behind because of my trip to Germany that we spoke about.
     int i = 1;
-    while(quotient > 0){
-        allNumbers[i++] = quotient % 2;
-        quotient = quotient / 2;
+    while(remainder > 0){
+        allNumbers[i++] = remainder % 2;
+        remainder = remainder / 2;
     }
 
     // Standard output
