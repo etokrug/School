@@ -56,8 +56,8 @@ int main() {
     // I'm used to working with blocks or strings that print easily.
     // Looking at this now it's clear to see that it's easy but it
     // took me a while to arrive at this.
-    int j;
-    for(j = i - 1; j > 0; j--){
+    int j = i - 1;
+    for(j; j > 0; j--){
         printf("%d", allNumbers[j]);
     }
 
