@@ -27,8 +27,8 @@ int main() {
     int remainder;
 
     // This is the array that will end up (I hope) holding the full binary number
-    // I set it to 32 to represent a 32 bit system - I think
-    int allNumbers[32];
+    // I set it to 31 to represent a 32 bit system - I think
+    int allNumbers[31];
 
     // Main input here - still getting used to C vs C++/C#
     printf("Enter Decimal Number: ");
