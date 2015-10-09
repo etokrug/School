@@ -3,11 +3,14 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.FileNotFoundException;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Scanner;
+
 
 // In BlueJ, specify the command line argument when you call main().
 //
 // In Eclipse, specify the command line argument in the project's "Run Configuration."
+
 
 public class AuthorIdentify
 {
@@ -26,7 +29,7 @@ public class AuthorIdentify
 		return inputStream;
 	}
 
-	private static void countWordPairs(InputStream is, HashMap<String, Integer> dict)
+	private static void countWordPairs(InputStream is, HashMap<String[], Integer> dict)
 	{
 		Scanner sc = null;	
 		String word = null;
@@ -41,17 +44,14 @@ public class AuthorIdentify
 			word = sc.next();
 			if (previousWord != null)
 			{
-				if (dict.containsKey(word)) {
-					dict.put(word, dict.get(word) + 1);
+				String[] keyWord = new String[2];
+				keyWord[0] = previousWord;
+				keyWord[1] = word;
+				if (dict.containsKey(keyWord)) {
+					dict.put(keyWord, dict.get(keyWord) + 1);
 				}
 				else {
-					dict.put(word, 1);
-				}
-			}
-			else {
-				// Case for first word as previous word will be null
-				if (dict.isEmpty()){
-					dict.put(word, 1);
+					dict.put(keyWord, 1);
 				}
 			}
 			previousWord = word;
@@ -59,12 +59,20 @@ public class AuthorIdentify
 		sc.close();
 	}
 
-	private static int getCount(/* add a data structure here,*/String firstWord,String secondWord)
+	private static int getCount(HashMap<String[], Integer> dict, String firstWord, String secondWord)
 	{
 		int count = 0;
 
 		// insert code here to get a count of the number of times the pair firstWord,secondWord appear in the 
 		// provided datastructure
+		//TODO: WARNING: CHECK LATER TO SEE IF THIS DELETES OUT OF THE HashMap
+		String[] keyWord = new String[2];
+		keyWord[0] = firstWord;
+		keyWord[1] = secondWord;
+		
+		if (dict.containsKey(keyWord)){
+			count = dict.get(keyWord);
+		}
 		
 		return(count);		
 	}
@@ -79,12 +87,16 @@ public class AuthorIdentify
 
 		try
 		{
-			System.out.printf("CS261 - AuthorIdentify - Your Name%n%n");
+			System.out.printf("CS261 - AuthorIdentify - William Brown%n%n");
 
 			// Create an input stream for reading the data for each of the 
 			// reference documents and the sample document.  If any of the
 			// file opens fail an exception will be thrown.
-
+			// directory for testing
+			String cwd = new String();
+			cwd = System.getProperty("user.dir");
+			System.out.printf(cwd + "%n%n");
+			
 			InputStream ref1 = getFileInputStream(args[0]);
 			InputStream ref2 = getFileInputStream(args[1]);
 			InputStream ref3 = getFileInputStream(args[2]);
@@ -98,18 +110,23 @@ public class AuthorIdentify
 			// add variable declarations here to hold the word counts for each of the reference documents
 			//
 			// sometype ref1Counts;
+			HashMap<String[], Integer> ref1Counts = new HashMap<String[], Integer>();
 			// sometype ref2Counts;
+			HashMap<String[], Integer> ref2Counts = new HashMap<String[], Integer>();
 			// sometype ref3Counts;
+			HashMap<String[], Integer> ref3Counts = new HashMap<String[], Integer>();
+			// sometype sampCounts
+			HashMap<String[], Integer> sampCounts = new HashMap<String[], Integer>();
 			
-			countWordPairs(ref1/*,ref1Counts*/);
-			countWordPairs(ref2/*,ref2Counts*/);
-			countWordPairs(ref3/*,ref3Counts*/);
-			countWordPairs(samp/*,sampCounts*/);
+			countWordPairs(ref1, ref1Counts);
+			countWordPairs(ref2, ref2Counts);
+			countWordPairs(ref3, ref3Counts);
+			countWordPairs(samp, sampCounts);
 			
 			// Now calculate the score for each reference document.  The score is calculated as follows:
 			// 
-			// sampleCount = the number of times a particular word pair occurs in the sample document
-			// refCount = the number of times a particular word pair occurs in the reference document
+			// sampleCount = 	the number of times a particular word pair occurs in the sample document
+			// refCount = 		the number of times a particular word pair occurs in the reference document
 			// refScore = for all word pairs in the sample, refScore = refScore + (sampleCount * refCount)
 			//
 			// The refCount and refScore are calculated for each of the reference documents (so you have three of them).
@@ -118,8 +135,21 @@ public class AuthorIdentify
 			int score1 = 0;
 			int score2 = 0;
 			int score3 = 0;
+			int sampleCount = 0;
+			int refCount = 0;
+			int refScore = 0;
 			
-			// Add your code here to create the three scores.  See the comment above and the assignment instructions			
+			Iterator<String[]> keySetIterator = sampCounts.keySet().iterator();
+			
+			while(keySetIterator.hasNext()) {
+				String[] key = keySetIterator.next();
+				sampleCount = getCount(sampCounts, key[0], key[1]);
+				//Alternatively
+				//sampleCount = sampCounts.get(key);
+				refCount = getCount(ref1Counts, key[0], key[1]);
+				
+				score1 += (sampleCount * refCount);
+			}
 			
 			// Pick the reference winner
 			String winner = null;
@@ -147,4 +177,7 @@ public class AuthorIdentify
 		}
 	}
 }
+
+
+
 
