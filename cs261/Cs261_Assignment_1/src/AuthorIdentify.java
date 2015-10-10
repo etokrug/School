@@ -7,11 +7,6 @@ import java.util.Iterator;
 import java.util.Scanner;
 
 
-// In BlueJ, specify the command line argument when you call main().
-//
-// In Eclipse, specify the command line argument in the project's "Run Configuration."
-
-
 public class AuthorIdentify
 {
 	// returns an InputStream that gets data from the named file
@@ -59,10 +54,8 @@ public class AuthorIdentify
 
 	private static int getCount(HashMap<String, Integer> dict, String firstWord, String secondWord)
 	{
+		// This gets the count of a word pair based on a hash.
 		int count = 0;
-
-		// insert code here to get a count of the number of times the pair firstWord,secondWord appear in the 
-		// provided datastructure
 		String keyWord = new String(firstWord + "-" + secondWord);
 				
 		if (dict.containsKey(keyWord)){
@@ -73,20 +66,21 @@ public class AuthorIdentify
 	}
 	
 	private static int getScore(HashMap<String, Integer> sample, HashMap<String, Integer> reference){
-		
+		// score = for all word pairs in the sample, refScore = refScore + (sampleCount * refCount)
 		int score = 0;
+		// sampleCount = 	the number of times a particular word pair occurs in the sample document
 		int sampleCount = 0;
+		// refCount = 		the number of times a particular word pair occurs in the reference document
 		int refCount = 0;
-		
 		Iterator<String> keySetIterator = sample.keySet().iterator();
-		
+
 		while(keySetIterator.hasNext()) {
 			String key = keySetIterator.next();
 			String firstWord = new String(key.substring(0, key.indexOf("-")));
 			String secondWord = new String(key.substring(key.indexOf("-") + 1, key.length()));
 			sampleCount = getCount(sample, firstWord, secondWord);
 			//Alternatively
-			//sampleCount = sampCounts.get(key);
+			//sampleCount = sample.get(key);
 			refCount = getCount(reference, firstWord, secondWord);
 			// Print statement for testing
 			//System.out.println(key.toString() + ": " + sample.get(key));
@@ -108,29 +102,20 @@ public class AuthorIdentify
 		{
 			System.out.printf("CS261 - AuthorIdentify - William Brown%n%n");
 			// Directory information for testing
-			//String cwd = new String();
-			//cwd = System.getProperty("user.dir");
-			//System.out.printf(cwd + "%n%n");
+			// String cwd = new String();
+			// cwd = System.getProperty("user.dir");
+			// System.out.printf(cwd + "%n%n");
 			
 			InputStream ref1 = getFileInputStream(args[0]);
 			InputStream ref2 = getFileInputStream(args[1]);
 			InputStream ref3 = getFileInputStream(args[2]);
 			InputStream samp = getFileInputStream(args[3]);
 
-			// The general idea is to create a word-pair frequency count for each
-			// reference text.  Then we'll read the sample text and find the reference
-			// text with the best match on word pair frequency.
-
-
-			// add variable declarations here to hold the word counts for each of the reference documents
-			//
-			// sometype ref1Counts;
+			// Set of HashMaps to hold values. I decided to use a HashMap because it's faster
+			// Than iterating over a ton of lists/arrays
 			HashMap<String, Integer> ref1Counts = new HashMap<String, Integer>();
-			// sometype ref2Counts;
 			HashMap<String, Integer> ref2Counts = new HashMap<String, Integer>();
-			// sometype ref3Counts;
 			HashMap<String, Integer> ref3Counts = new HashMap<String, Integer>();
-			// sometype sampCounts
 			HashMap<String, Integer> sampCounts = new HashMap<String, Integer>();
 			
 			countWordPairs(ref1, ref1Counts);
@@ -138,22 +123,9 @@ public class AuthorIdentify
 			countWordPairs(ref3, ref3Counts);
 			countWordPairs(samp, sampCounts);
 			
-			// Now calculate the score for each reference document.  The score is calculated as follows:
-			// 
-			// sampleCount = 	the number of times a particular word pair occurs in the sample document
-			// refCount = 		the number of times a particular word pair occurs in the reference document
-			// refScore = for all word pairs in the sample, refScore = refScore + (sampleCount * refCount)
-			//
-			// The refCount and refScore are calculated for each of the reference documents (so you have three of them).
-			// In the end we will pick the reference with the highest score.
-			
-			int score1 = 0;
-			int score2 = 0;
-			int score3 = 0;
-			
-			score1 = getScore(sampCounts, ref1Counts);
-			score2 = getScore(sampCounts, ref2Counts);
-			score3 = getScore(sampCounts, ref3Counts);
+			int score1 = getScore(sampCounts, ref1Counts);
+			int score2 = getScore(sampCounts, ref2Counts);
+			int score3 = getScore(sampCounts, ref3Counts);
 
 			
 			// Pick the reference winner
