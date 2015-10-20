@@ -7,9 +7,9 @@
  *                      It takes input from a user (expecting a proper input
  *                      with no error handling).
  *
- *        Version:  1.0
+ *        Version:  1.1
  *        Created:  10/04/2015 09:11:15 AM
- *       Revision:  none
+ *       Revision:  10/19/2015
  *       Compiler:  gcc
  *
  *         Author:  William Brown
@@ -82,14 +82,43 @@ int main() {
         else { tempNumbers[temp] = 0; }
     }
 
-    // If sign is negative add one to
-    tempLen = sizeof(tempNumbers)/sizeof(int);
-    
+    // Transfer the information for our temp array to the main one for printing
     int stopper = 0;
     while (temp > stopper) {
         allNumbers[stopper] = tempNumbers[stopper];
         stopper++;
     }
+
+    // Add one to the the final array if it is negative so that it can
+    // be a complete Two's Complement.
+    stopper = 0;
+    int extraBit = 1;
+    int carryBit = 0;
+    while (stopper < numbersLen) {
+        if (allNumbers[stopper] == 0) {
+            if (extraBit == 1 || carryBit == 1) {
+                allNumbers[stopper] = 1;
+                extraBit = 0;
+                carryBit = 0;
+            }
+            else {
+                extraBit = 0;
+                carryBit = 0;
+            }
+        }
+        else {
+            if (carryBit == 0) {
+                allNumbers[stopper] = 0;
+            }
+            else { carryBit = 1; }
+
+            allNumbers[stopper] = 0;
+        }
+
+        if (!extraBit) { break; }
+        stopper++;
+    }
+
 
     // Standard output
     printf("Output Binary Number: ");
