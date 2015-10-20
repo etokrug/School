@@ -25,45 +25,70 @@ int main() {
     // Main set of declarations here
     int decimal;
     int remainder;
-
+    static int true = 1;
+    static int false = 0;
+    int negative = false;
+    
     // This is the array that will end up (I hope) holding the full binary number
     // I set it to 31 to represent a 32 bit system - I think
-    int allNumbers[31];
+    int allNumbers[32];
+    
 
     // Main input here - still getting used to C vs C++/C#
     printf("Enter Decimal Number: ");
     scanf("%d", &decimal);
 
+    if (decimal < 0) {
+        negative = true;
+        decimal *= -1;
+    }
+    
     // This sets the quotient equal to the decimal number.
     // This is done so that it can be later manipulated into the correct number.
     remainder = decimal;
 
-    // This loop, although you stated pretty clearly what it should do
-    // gave me a lot of problems and I had to search for some additional
-    // online help. It's not that loops give me problems, rather this math
-    // is not something I'm used to on any level and I'm kind of two weeks
-    // behind because of my trip to Germany that we spoke about.
     int i = 1;
+    int remainderHolder = 0;
     while(remainder > 0){
-        allNumbers[i++] = remainder % 2;
+        if (i == 1) {
+            if (!negative) {
+            
+            }
+        }
+
+        if (negative) {
+           if (remainder % 2 == 0) {
+               remainderHolder = 1;
+           }
+           else {
+               remainderHolder = 0;
+           }
+
+        }
+        else {
+            remainderHolder = remainder % 2;
+        }
+    
+        allNumbers[i++] = remainderHolder;
         remainder /= 2;
     }
 
     // Standard output
     printf("Output Binary Number: ");
 
-    // This was another loop that I had to get help with online
-    // I'm used to working with blocks or strings that print easily.
-    // Looking at this now it's clear to see that it's easy but it
-    // took me a while to arrive at this.
     int j = i - 1;
     for(j; j > 0; j--){
         printf("%d", allNumbers[j]);
     }
 
-    // Classically, I couldn't figure out why the output kept wrapping back onto
-    // itself. Solution, add a newline.
     printf("\n");
     
     return 0;
 }
+
+
+
+
+
+
+
