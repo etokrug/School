@@ -94,29 +94,33 @@ int main() {
     stopper = 0;
     int extraBit = 1;
     int carryBit = 0;
-    while (stopper < numbersLen) {
-        if (allNumbers[stopper] == 0) {
-            if (extraBit == 1 || carryBit == 1) {
-                allNumbers[stopper] = 1;
-                extraBit = 0;
-                carryBit = 0;
+    if (negative) {
+        while (stopper < numbersLen) {
+            if (allNumbers[stopper] == 0) {
+                if (extraBit == 1 || carryBit == 1) {
+                    allNumbers[stopper] = 1;
+                    extraBit = 0;
+                    carryBit = 0;
+                }
+                else {
+                    extraBit = 0;
+                    carryBit = 0;
+                }
             }
             else {
-                extraBit = 0;
-                carryBit = 0;
+                if (carryBit == 0) {
+                    allNumbers[stopper] = 0;
+                    carryBit = 1;
+                }
+                else {
+                    carryBit = 0;
+                    extraBit = 0;
+                }
             }
-        }
-        else {
-            if (carryBit == 0) {
-                allNumbers[stopper] = 0;
-            }
-            else { carryBit = 1; }
 
-            allNumbers[stopper] = 0;
+            if (!extraBit) { break; }
+            stopper++;
         }
-
-        if (!extraBit) { break; }
-        stopper++;
     }
 
 
