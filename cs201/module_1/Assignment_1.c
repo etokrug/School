@@ -110,11 +110,6 @@ int main() {
             else {
                 if (carryBit == 0) {
                     allNumbers[stopper] = 0;
-                    carryBit = 1;
-                }
-                else {
-                    carryBit = 0;
-                    extraBit = 0;
                 }
             }
 
