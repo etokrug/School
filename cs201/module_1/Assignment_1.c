@@ -25,15 +25,12 @@ int main() {
     // Main set of declarations here
     int decimal;
     int remainder;
-    static int true = 1;
-    static int false = 0;
-    int negative = false;
+    int negative = 0;
     
     // Initialize the "32 bit" int arrays we'll be using to handle the conversions
     int allNumbers[33];
     int tempNumbers[33];
     int numbersLen = sizeof(allNumbers)/sizeof(int);
-    int tempLen = 0;
 
     // Main input here
     printf("Enter Decimal Number: ");
@@ -42,7 +39,7 @@ int main() {
     // If the number is negative switch it to positive for handling.
     // Mark the negative bool as true.
     if (decimal < 0) {
-        negative = true;
+        negative = 1;
         decimal *= -1;
     }
     
@@ -60,6 +57,9 @@ int main() {
     // This is done so that it can be later manipulated into the correct number.
     remainder = decimal;
 
+    // Main body of the program here.
+    // Loads the temporary array with the final values if positive.
+    // Loads the temporary arry with the inverted values if negative.
     int temp = 1;
     int remainderHolder = 0;
     while(remainder > 0){
@@ -92,18 +92,18 @@ int main() {
     // Add one to the the final array if it is negative so that it can
     // be a complete Two's Complement.
     stopper = 0;
-    int extraBit = 1;
+    int breakBit = 1;
     int carryBit = 0;
     if (negative) {
         while (stopper < numbersLen) {
             if (allNumbers[stopper] == 0) {
-                if (extraBit == 1 || carryBit == 1) {
+                if (breakBit || carryBit) {
                     allNumbers[stopper] = 1;
-                    extraBit = 0;
+                    breakBit = 0;
                     carryBit = 0;
                 }
                 else {
-                    extraBit = 0;
+                    breakBit = 0;
                     carryBit = 0;
                 }
             }
@@ -112,16 +112,16 @@ int main() {
                     allNumbers[stopper] = 0;
                 }
             }
-
-            if (!extraBit) { break; }
+            if (!breakBit) { break; }
             stopper++;
         }
     }
 
-
     // Standard output
     printf("Output Binary Number: ");
 
+    // Final binary print statement with a space added
+    // every four bits for clarity.
     int space = 0;
     int all = numbersLen - 1;
     for(all; all > 0; all--){
@@ -132,15 +132,7 @@ int main() {
         printf("%d", allNumbers[all]);
         space++;
     }
-
     printf("\n");
     
     return 0;
 }
-
-
-
-
-
-
-
