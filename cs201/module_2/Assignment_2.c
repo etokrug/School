@@ -6,7 +6,8 @@
  *    Description:  This program converts decimals to binary and hex.
  *                  It takes input from a user (expecting a proper input
  *                  with no error handling).
- *                  It extracts bits from HEX values and shifts them.
+ *                  It extracts bits from a byte set using a mask and then
+ *                  adds them together.
  *
  *        Version:  1.0
  *        Created:  10/21/2015
@@ -59,6 +60,17 @@ int main() {
     return 0;
 }
 
+// This extracts sets byte by byte from a number.
+// The sets are then operated on with a mask and shifted to the right
+// Usage: addExtractedBits(0010 0100 0001 0000, 3, 4)
+// -> first byte:  0010 0100
+// -> masked:      0000 0000
+// -> shifted:     0000 0000
+// -> second byte: 0001 0000
+// -> masked:      0001 0000
+// -> shifted:     0000 0010
+// -> first byte + second byte = 0 + 2
+// -> return value = 2
 int addExtractedBits(int numberToExtract, int maskBegin, int maskEnd) {
     int i = 0;
     int bitLoop = 8;
@@ -113,7 +125,8 @@ int* convertDecToBinary(int converter, int* allNumbers, int arraySize) {
     return allNumbers;
 }
 
-
+/// This creates a bitmask starting at a specified bit position (7<-0)
+// Usage: mask(3, 4) returns 0001 1000
 int mask(int start, int end) {
     int i = start;
     int maskHolder = 0;
@@ -125,14 +138,16 @@ int mask(int start, int end) {
     return returnInt;
 }
 
+// This returns a specified byte set from an integer.
+// Usage: getByteSet(0010 0100 0000 0000, 1) returns 0010 0100
 int getByteSet(int converter, int bytesToShift) {
     int returnInt = converter >> bytesToShift * 8;
     return returnInt;
 }
 
+// Invert the bits if you're working with a negative number
 int* invertBits(int* bitsToFlip, int arraySize) {
     //int bitLen = arraySize - 1;
-
     int i = 0;
     for (i; i < arraySize; i++) {
         if (bitsToFlip[i] == 0) {
@@ -142,10 +157,10 @@ int* invertBits(int* bitsToFlip, int arraySize) {
             bitsToFlip[i] = 0;
         }
     }
-    
     return bitsToFlip;
 }
 
+// Add one bit after a negative number has been inverted to create a Two's Compliment
 int* addOneBitToBitArray(int* bitsToAddTo, int arraySize) {
     int breakBit = 1;
     int stopper = arraySize - 1;
@@ -165,10 +180,11 @@ int* addOneBitToBitArray(int* bitsToAddTo, int arraySize) {
     return bitsToAddTo;
 }
 
+// Print statement for the binary array to keep with DRY.
 void printBinaryArray(int* binaryArray, int arraySize) {
     if (!binaryArray) { printf("\nThe binary array passed was empty!\n"); }
     
-    // every four bits for clarity.
+    // space every four bits for clarity.
     int space = 0;
     int i = 0;
     for(i; i < arraySize; i++){
