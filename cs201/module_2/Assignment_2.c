@@ -26,6 +26,9 @@ int* addOneBitToBitArray(int* bitsToAddTo, int arraySize);
 void printBinaryArray(int* binaryArray, int arraySize);
 void printHexArray(char* hexArray);
 int* convertDecToBinary(int converter, int* allNumbers, int arraySize);
+int getByteSet(int converter, int bytesToShift);
+int mask(int start, int end);
+void convertDecToHex(int converter);
 
 int main() {
     // Main set of declarations here
@@ -43,6 +46,12 @@ int main() {
     printf("Output Binary Number: ");
     printBinaryArray(numberArray, arraySize);
     printf("\n");
+
+    mask(3, 4);
+    printf("\n");
+    convertDecToHex(decimal);
+    printf("\n");
+
 
     return 0;
 }
@@ -86,6 +95,22 @@ int* convertDecToBinary(int converter, int* allNumbers, int arraySize) {
     return allNumbers;
 }
 
+int mask(int start, int end) {
+    int i = start;
+    int maskHolder = 0;
+    int returnInt = 0;
+    for (i; i <=  end; i++) {
+        maskHolder = 1 << i;
+        returnInt = returnInt | maskHolder;
+    }
+    return returnInt;
+}
+
+int getByteSet(int converter, int bytesToShift) {
+    int returnInt = converter >> bytesToShift * 8;
+    return returnInt;
+}
+
 int* invertBits(int* bitsToFlip, int arraySize) {
     //int bitLen = arraySize - 1;
 
@@ -121,14 +146,14 @@ int* addOneBitToBitArray(int* bitsToAddTo, int arraySize) {
     return bitsToAddTo;
 }
 
-/* 
-char* convertDecToHex(int converter) {
-
+ 
+void convertDecToHex(int converter) {
+    printf("Hex number: %X", converter);
 
     // TODO: implement proper return;
-    return;
+    
 }
-*/
+
 
 void printBinaryArray(int* binaryArray, int arraySize) {
     if (!binaryArray) { printf("\nThe binary array passed was empty!\n"); }
