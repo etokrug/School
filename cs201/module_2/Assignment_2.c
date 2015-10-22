@@ -44,6 +44,7 @@ int main() {
     scanf("%d", &decimal);
     printf("\n");
 
+    // Convert the integer into the existing array
     convertDecToBinary(decimal, numberArray, arraySize);
 
     // Standard output
@@ -51,8 +52,10 @@ int main() {
     printBinaryArray(numberArray, arraySize);
     printf("\n");
 
-    printf("Output Hex Number: %X\n", decimal);
+    // Displays the integer in Hex format.
+    printf("Output Hex Number:0x%X\n", decimal);
 
+    // Get extracted bits for output
     output = addExtractedBits(decimal, maskBegin, maskEnd);
 
     printf("Output of extracted bits added together: %d\n", output);
@@ -86,6 +89,14 @@ int addExtractedBits(int numberToExtract, int maskBegin, int maskEnd) {
     return returnInt;
 }
 
+// Main body of the decimal to binary converter.
+// Steps:
+// 1.) Creates a usable int array
+// 2.) Checks if input decimal is negative, if so it converts it
+//      to a positive integer for usage purposes
+// 3.) Initializes values in the array with 0
+// 4.) Runs a loop to input all of the values of the binary representation into the array
+// 5.) If the integer was negative it inverts the bits and adds one to make a Two's Compliment
 int* convertDecToBinary(int converter, int* allNumbers, int arraySize) {
     // Initialize the n-bit int arrays we'll be using to handle the conversions
     int numbersLen = arraySize - 1;
