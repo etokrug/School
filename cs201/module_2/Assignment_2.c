@@ -52,7 +52,7 @@ int main() {
     return 0;
 }
 
-int[] convertDecToBinary(int converter) {
+int* convertDecToBinary(int converter) {
     // Initialize the "32 bit" int arrays we'll be using to handle the conversions
     int allNumbers[33];
     int tempNumbers[33];
@@ -145,7 +145,44 @@ int remainder;
 
 }
 
-char[] convertDecToHex(int converter) {
+int* invertBits(int* bitsToFlip) {
 
 
 }
+
+char* convertDecToHex(int converter) {
+
+
+}
+
+int printArray(int* binaryArray) {
+    if (!binaryArray) { return -1; }
+    
+    int binaryLen = sizeof(binaryArray)/sizeof(int);
+
+    // every four bits for clarity.
+    int space = 0;
+    int i = binaryLen - 1;
+    for(i; i > 0; i--){
+        if (space == 4) {
+            printf("%s", " ");
+            space = 0;
+        }
+        printf("%d", binaryArray[i]);
+        space++;
+    }
+
+    return 0;
+}
+
+int printArray(char* hexArray) {
+    if (!hexArray) { return -1; }
+
+    int hexLen = sizeof(hexArray)/sizeof(int);
+
+    int i = 0;
+    for (i; i < hexLen; i++) {
+        printf("%s", hexArray[i]);
+    }
+}
+
