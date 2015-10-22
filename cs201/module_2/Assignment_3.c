@@ -1,7 +1,7 @@
 /*
  * =====================================================================================
  *
- *       Filename:  Assignment_2.c
+ *       Filename:  Assignment_3.c
  *
  *    Description:  This program converts decimals to binary and hex.
  *                  It takes input from a user (expecting a proper input
@@ -53,7 +53,7 @@ int main() {
     printf("\n");
 
     // Displays the integer in Hex format.
-    printf("Output Hex Number:0x%X\n", decimal);
+    printf("Output Hex Number: 0x%X\n", decimal);
 
     // Get extracted bits for output
     output = addExtractedBits(decimal, maskBegin, maskEnd);
