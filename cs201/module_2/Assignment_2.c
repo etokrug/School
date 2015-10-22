@@ -24,21 +24,24 @@
 int* invertBits(int* bitsToFlip, int arraySize);
 int* addOneBitToBitArray(int* bitsToAddTo, int arraySize);
 void printBinaryArray(int* binaryArray, int arraySize);
-void printHexArray(char* hexArray);
 int* convertDecToBinary(int converter, int* allNumbers, int arraySize);
 int getByteSet(int converter, int bytesToShift);
 int mask(int start, int end);
-void convertDecToHex(int converter);
+int addExtractedBits(int numberToExtract, int mask, int maskBegin);
 
 int main() {
     // Main set of declarations here
     int decimal;
     int arraySize = 32;
     int numberArray[arraySize - 1];
+    int maskBegin = 3;
+    int maskEnd = 4;
+    int output = 0;
 
     // Main input here
     printf("Enter Decimal Number: ");
     scanf("%d", &decimal);
+    printf("\n");
 
     convertDecToBinary(decimal, numberArray, arraySize);
 
@@ -47,13 +50,28 @@ int main() {
     printBinaryArray(numberArray, arraySize);
     printf("\n");
 
-    mask(3, 4);
-    printf("\n");
-    convertDecToHex(decimal);
-    printf("\n");
+    printf("Output Hex Number: %X\n", decimal);
 
+    output = addExtractedBits(decimal, maskBegin, maskEnd);
 
+    printf("Output of extracted bits added together: %d\n", output);
+    
     return 0;
+}
+
+int addExtractedBits(int numberToExtract, int maskBegin, int maskEnd) {
+    int i = 0;
+    int bitLoop = 8;
+    int returnInt = 0;
+    int holderInt = 0;
+    int maskInt = mask(maskBegin, maskEnd);
+    for (i; i < 4; i++) {
+        holderInt = getByteSet(numberToExtract, i);
+        holderInt = holderInt & maskInt;
+        holderInt = holderInt >> maskBegin;
+        returnInt += holderInt;
+    }
+    return returnInt;
 }
 
 int* convertDecToBinary(int converter, int* allNumbers, int arraySize) {
@@ -94,6 +112,7 @@ int* convertDecToBinary(int converter, int* allNumbers, int arraySize) {
 
     return allNumbers;
 }
+
 
 int mask(int start, int end) {
     int i = start;
@@ -146,15 +165,6 @@ int* addOneBitToBitArray(int* bitsToAddTo, int arraySize) {
     return bitsToAddTo;
 }
 
- 
-void convertDecToHex(int converter) {
-    printf("Hex number: %X", converter);
-
-    // TODO: implement proper return;
-    
-}
-
-
 void printBinaryArray(int* binaryArray, int arraySize) {
     if (!binaryArray) { printf("\nThe binary array passed was empty!\n"); }
     
@@ -170,9 +180,3 @@ void printBinaryArray(int* binaryArray, int arraySize) {
         space++;
     }
 }
-
-void printHexArray(char* hexArray) {
-    if (!hexArray) { printf("/nThe hex array passed was empty!\n"); }
-    printf("%s", hexArray);
-}
-
