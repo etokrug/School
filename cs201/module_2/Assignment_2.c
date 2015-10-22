@@ -35,20 +35,7 @@ int main() {
     // Standard output
     printf("Output Binary Number: ");
 
-    // Final binary print statement with a space added
-    // every four bits for clarity.
-    int space = 0;
-    int all = numbersLen - 1;
-    for(all; all > 0; all--){
-        if (space == 4) {
-            printf("%s", " ");
-            space = 0;
-        }
-        printf("%d", allNumbers[all]);
-        space++;
-    }
-    printf("\n");
-    
+   // TODO: Add print statements here. 
     return 0;
 }
 
@@ -79,7 +66,7 @@ int remainder;
     }
 // This sets the quotient equal to the decimal number.
     // This is done so that it can be later manipulated into the correct number.
-    remainder = decimal;
+    remainder = converter;
 
 // Main body of the program here.
     // Loads the temporary array with the final values if positive.
@@ -140,22 +127,55 @@ int remainder;
             stopper++;
         }
     }
-
-
-
 }
 
 int* invertBits(int* bitsToFlip) {
+    int bitLen = sizeof(bitsToFlip)/sizeof(int) - 1;
 
+    int i = 0;
+    for (i; i < bitLen; i++) {
+        if (bitsToFlip[i] == 0) {
+            bitsToFlip[i] = 1;
+        }
+        else {
+            bitsToFlip[i] = 0;
+        }
+    }
+    
 
+    // TODO: implement proper return;
+    return;
+}
+
+int* addOneBitToBitArray(int* bitsToAddTo) {
+    int breakBit = 1;
+    int stopper = sizeof(bitsToAddTo)/sizeof(int) - 1;
+    while (stopper >= 0) {
+        if (bitsToAddTo[stopper] == 0) {
+            if (breakBit) {
+                bitsToAddTo[stopper] = 1;
+                breakBit = 0;
+            }
+            else {
+                breakBit = 0;
+            }
+        }
+        else {
+            bitsToAddTo[stopper] = 0;
+        }
+        if (!breakBit) { break; }
+        stopper--;
+    }
 }
 
 char* convertDecToHex(int converter) {
 
 
+    // TODO: implement proper return;
+    return;
 }
 
-int printArray(int* binaryArray) {
+int printBinaryArray(int* binaryArray) {
     if (!binaryArray) { return -1; }
     
     int binaryLen = sizeof(binaryArray)/sizeof(int);
@@ -175,14 +195,8 @@ int printArray(int* binaryArray) {
     return 0;
 }
 
-int printArray(char* hexArray) {
+int printHexArray(char* hexArray) {
     if (!hexArray) { return -1; }
-
-    int hexLen = sizeof(hexArray)/sizeof(int);
-
-    int i = 0;
-    for (i; i < hexLen; i++) {
-        printf("%s", hexArray[i]);
-    }
+    printf("%s", hexArray);
 }
 
