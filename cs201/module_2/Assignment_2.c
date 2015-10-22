@@ -21,112 +21,69 @@
  * =====================================================================================
  */
 #include <stdio.h>
+int* invertBits(int* bitsToFlip);
+int* addOneBitToBitArray(int* bitsToAddTo);
+void printBinaryArray(int* binaryArray);
+void printHexArray(char* hexArray);
+int* convertDecToBinary(int converter, int* allNumbers);
 
 int main() {
     // Main set of declarations here
     int decimal;
-    
+    int numberArray[33];
+
     // Main input here
     printf("Enter Decimal Number: ");
     scanf("%d", &decimal);
 
-    // TODO: Add in calls to your methods here
+    convertDecToBinary(decimal, numberArray);
 
     // Standard output
     printf("Output Binary Number: ");
+    printBinaryArray(numberArray);
+    printf("/n");
 
-   // TODO: Add print statements here. 
     return 0;
 }
 
-int* convertDecToBinary(int converter) {
-    // Initialize the "32 bit" int arrays we'll be using to handle the conversions
-    int allNumbers[33];
-    int tempNumbers[33];
+int* convertDecToBinary(int converter, int* allNumbers) {
+    // Initialize the n-bit int arrays we'll be using to handle the conversions
     int numbersLen = sizeof(allNumbers)/sizeof(int);
-int remainder;
+    int remainder;
     int negative = 0;
     
- // If the number is negative switch it to positive for handling.
+    // If the number is negative switch it to positive for handling.
     // Mark the negative bool as true.
     if (converter < 0) {
         negative = 1;
         converter *= -1;
     }
     
-// Initizalize the values of the "32 bit" array
+    // Initizalize the values of the n-bit array
     int initializeInt = 0;
     for (initializeInt; initializeInt < numbersLen; initializeInt++) {
-        if (negative) {
-            allNumbers[initializeInt] = 1;
-        }
-        else {
-            allNumbers[initializeInt] = 0;
-        }
+        allNumbers[initializeInt] = 0;
     }
-// This sets the quotient equal to the decimal number.
+    // This sets the quotient equal to the decimal number.
     // This is done so that it can be later manipulated into the correct number.
     remainder = converter;
 
-// Main body of the program here.
+    // Main body of the program here.
     // Loads the temporary array with the final values if positive.
     // Loads the temporary arry with the inverted values if negative.
-    int temp = 1;
-    int remainderHolder = 0;
+    int temp = numbersLen - 1;
     while(remainder > 0){
-        if (negative) {
-           if (remainder % 2 == 0) {
-               remainderHolder = 1;
-           }
-           else {
-               remainderHolder = 0;
-           }
-        }
-        else {
-            remainderHolder = remainder % 2;
-        }
-        tempNumbers[temp++] = remainderHolder;
+        allNumbers[temp--] = remainder % 2;
         remainder /= 2;
-        if (remainder == 0 && negative) {
-            tempNumbers[temp] = 1;
-        }
-        else { tempNumbers[temp] = 0; }
+        allNumbers[temp] = 1;
     }
 
-    // Transfer the information for our temp array to the main one for printing
-    int stopper = 0;
-    while (temp > stopper) {
-        allNumbers[stopper] = tempNumbers[stopper];
-        stopper++;
-    }
-
-    // Add one to the the final array if it is negative so that it can
-    // be a complete Two's Complement.
-    stopper = 0;
-    int breakBit = 1;
-    int carryBit = 0;
     if (negative) {
-        while (stopper < numbersLen) {
-            if (allNumbers[stopper] == 0) {
-                if (breakBit || carryBit) {
-                    allNumbers[stopper] = 1;
-                    breakBit = 0;
-                    carryBit = 0;
-                }
-                else {
-                    breakBit = 0;
-                    carryBit = 0;
-                }
-            }
-            else {
-                if (carryBit == 0) {
-                    allNumbers[stopper] = 0;
-                }
-            }
-            if (!breakBit) { break; }
-            stopper++;
-        }
+        invertBits(allNumbers);
+        addOneBitToBitArray(allNumbers);
     }
+
+    return allNumbers;
 }
 
 int* invertBits(int* bitsToFlip) {
@@ -142,9 +99,7 @@ int* invertBits(int* bitsToFlip) {
         }
     }
     
-
-    // TODO: implement proper return;
-    return;
+    return bitsToFlip;
 }
 
 int* addOneBitToBitArray(int* bitsToAddTo) {
@@ -156,9 +111,6 @@ int* addOneBitToBitArray(int* bitsToAddTo) {
                 bitsToAddTo[stopper] = 1;
                 breakBit = 0;
             }
-            else {
-                breakBit = 0;
-            }
         }
         else {
             bitsToAddTo[stopper] = 0;
@@ -166,17 +118,20 @@ int* addOneBitToBitArray(int* bitsToAddTo) {
         if (!breakBit) { break; }
         stopper--;
     }
+    return bitsToAddTo;
 }
 
+/* 
 char* convertDecToHex(int converter) {
 
 
     // TODO: implement proper return;
     return;
 }
+*/
 
-int printBinaryArray(int* binaryArray) {
-    if (!binaryArray) { return -1; }
+void printBinaryArray(int* binaryArray) {
+    if (!binaryArray) { printf("/nThe binary array passed was empty!/n"); }
     
     int binaryLen = sizeof(binaryArray)/sizeof(int);
 
@@ -185,18 +140,16 @@ int printBinaryArray(int* binaryArray) {
     int i = binaryLen - 1;
     for(i; i > 0; i--){
         if (space == 4) {
-            printf("%s", " ");
+            printf(" ");
             space = 0;
         }
         printf("%d", binaryArray[i]);
         space++;
     }
-
-    return 0;
 }
 
-int printHexArray(char* hexArray) {
-    if (!hexArray) { return -1; }
+void printHexArray(char* hexArray) {
+    if (!hexArray) { printf("/nThe hex array passed was empty!/n"); }
     printf("%s", hexArray);
 }
 
