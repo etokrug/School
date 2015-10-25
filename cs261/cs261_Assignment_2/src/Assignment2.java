@@ -12,8 +12,7 @@ public class Assignment2
         System.out.printf("CS261 - Assignment 2 - William Brown%n%n");
         
         // get command line arguments
-        if (args.length != 5) {
-        	// TODO: Change this
+       /* if (args.length != 5) {
         	System.out.println("requires 5 arguments: nGames, nHands, cardsPerHand, cardsPerLine, shuffle");
         	return;
         	}
@@ -31,7 +30,10 @@ public class Assignment2
 
         System.out.printf("games: %d, hands: %d, cards per hand: %d,%ncards per line: %d, shuffle: %b%n%n",
         				  N_GAMES, N_HANDS, CARDS_PER_HAND, CARDS_PER_LINE, SHUFFLE);
-        
-        // add your code here
+        */
+        Dealer newDealer = new Dealer();
+        newDealer.layOutDeck(3);
+       	newDealer.dealerShuffle();
+        newDealer.layOutDeck(3);
     }
 }
