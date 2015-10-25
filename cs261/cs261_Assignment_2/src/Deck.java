@@ -30,7 +30,6 @@ public class Deck
     }
     
     public void Shuffle() {
-    	
     	for (int i = 0; i < 52; i++) {
     		int cardSwapFrom = 0;
     		int cardSwapTo = 0;
