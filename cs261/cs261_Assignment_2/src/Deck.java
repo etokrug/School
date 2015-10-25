@@ -47,6 +47,13 @@ public class Deck
 	    	deck.set(cardSwapFrom, cardSwapToHolder);
 	    	deck.set(cardSwapTo, cardSwapFromHolder);
     	}
-    	
+    }
+    
+    public Card GetCard(int index) {
+    	return deck.get(index);
+    }
+    
+    public int DeckLength() {
+    	return deck.size();
     }
 }

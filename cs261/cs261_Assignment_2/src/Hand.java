@@ -4,7 +4,8 @@ import java.util.Iterator;
 
 public class Hand
 {
-	private static final List<Card> hand = new ArrayList<Card>();
+	private List<Card> hand = new ArrayList<Card>();
+	
 	
 	public void AddCard(Card cardToAdd) {
 		hand.add(cardToAdd);
@@ -21,6 +22,7 @@ public class Hand
     		printCard = cardIter.next();
     		System.out.printf("%s(%d)%s", printCard.toString(), printCard.cardScore(), (cardIter.hasNext() ? ", ": ""));
     	}
+    	System.out.printf("\nScore: %d", GetScore());
     }
     
     public int GetScore() {
