@@ -6,12 +6,12 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class Deck
 {
-    private static final List<Card> protoDeck = new ArrayList<Card>();
+    private static final List<Card> deck = new ArrayList<Card>();
     
     Deck() {
     	for (Card.Suit suit : Card.Suit.values()) {
     		for (Card.Rank rank : Card.Rank.values()) {
-    			protoDeck.add(new Card(rank, suit));
+    			deck.add(new Card(rank, suit));
     		}
     	}
     }
@@ -19,7 +19,7 @@ public class Deck
     public void PrintDeck(int cardsPerLine) {
     	int newLine = 0;
     	Card printCard;
-    	for (Iterator<Card> cardIter = protoDeck.iterator(); cardIter.hasNext();) {
+    	for (Iterator<Card> cardIter = deck.iterator(); cardIter.hasNext();) {
     		int newLineModulo = newLine++ % (cardsPerLine);
     		if (newLineModulo == 0) {
     			System.out.printf("\n");
@@ -42,11 +42,11 @@ public class Deck
 	    	Card cardSwapFromHolder;
 	    	Card cardSwapToHolder;
 	    	
-	    	cardSwapFromHolder = protoDeck.get(cardSwapFrom);
-	    	cardSwapToHolder = protoDeck.get(cardSwapTo);
+	    	cardSwapFromHolder = deck.get(cardSwapFrom);
+	    	cardSwapToHolder = deck.get(cardSwapTo);
 	    	
-	    	protoDeck.set(cardSwapFrom, cardSwapToHolder);
-	    	protoDeck.set(cardSwapTo, cardSwapFromHolder);
+	    	deck.set(cardSwapFrom, cardSwapToHolder);
+	    	deck.set(cardSwapTo, cardSwapFromHolder);
     	}
     	
     }

@@ -2,6 +2,7 @@ public class Dealer
 {
 	Deck dealerDeck;
 	
+	
 	Dealer() {
 		this.dealerDeck = new Deck();
 	}
