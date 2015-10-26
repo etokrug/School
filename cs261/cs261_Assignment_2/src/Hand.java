@@ -4,13 +4,15 @@ import java.util.Iterator;
 
 public class Hand
 {
+	// Private ArrayList which holds all of the cards passed to it by the dealer
 	private List<Card> hand = new ArrayList<Card>();
 	
-	
+	// Add method created to reduce access
 	public void AddCard(Card cardToAdd) {
 		hand.add(cardToAdd);
 	}
 	
+	// Print method which prints out a cards specific information, called by the dealer
     public void PrintHand(int cardsPerLine) {
     	int newLine = 0;
     	Card printCard;
@@ -25,6 +27,7 @@ public class Hand
     	System.out.printf("\nScore: %d", GetScore());
     }
     
+    // Return the total score of the hand.
     public int GetScore() {
     	int returnScore = 0;
     	for (Iterator<Card> cardIter = hand.iterator(); cardIter.hasNext();) {

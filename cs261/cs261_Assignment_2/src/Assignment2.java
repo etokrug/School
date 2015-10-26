@@ -31,7 +31,9 @@ public class Assignment2
         System.out.printf("games: %d, hands: %d, cards per hand: %d,%ncards per line: %d, shuffle: %b%n%n",
         				  N_GAMES, N_HANDS, CARDS_PER_HAND, CARDS_PER_LINE, SHUFFLE);
 
+        // Dealer handles the game - initialize the dealer
         Dealer newDealer = new Dealer(N_GAMES, N_HANDS, CARDS_PER_HAND, CARDS_PER_LINE, SHUFFLE);
+        // Dealer plays the games out - not main
         newDealer.PlayGames();
     }
 }
