@@ -1,11 +1,10 @@
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 public class Dealer
 {
 	private Deck dealerDeck;
-	private List<Hand> hands = new ArrayList<Hand>();
+	private List<Hand> hands;
 	private int games = 0;
 	private int handsToDeal = 0;
 	private int cardsPerHand = 0;
@@ -30,18 +29,21 @@ public class Dealer
 		System.out.printf("\n");
 	}
 	
-	private void dealerShuffle() {
-		dealerDeck.Shuffle();
+	private void dealerShuffle(int times) {
+		dealerDeck.Shuffle(times);
 	}
 	
-	private void deal(int handsToDeal, int cardsPerHand) {
+	private int deal(int handsToDeal, int cardsPerHand, int deckIndex) {
+		this.hands = new ArrayList<Hand>();
+		
 		for (int i = 0; i < handsToDeal; i++) {
 			Hand handToAdd = new Hand();
 			hands.add(handToAdd);
 		}
 
 		int handCount = 0;
-		for (int i = 0; i < cardsPerHand * handsToDeal; i++) {
+		int stopper = (cardsPerHand * handsToDeal) + deckIndex;
+		for (int i = deckIndex; i < stopper; i++, deckIndex++) {
 
 			Card cardToDeal = dealerDeck.GetCard(i);
 			Hand handToAddTo = hands.get(handCount);
@@ -55,26 +57,35 @@ public class Dealer
 				handCount++;
 			}
 		}
+		return deckIndex;
 	}
 	
 	public void PlayGames() {
+		int deckIndex = 0;
 		try {
 			if (cardsPerHand * handsToDeal * games > dealerDeck.DeckLength()) 
-				throw new IllegalArgumentException("Number of hands by number of games and number of cards per hand exceeds the amount of cards in the deck.");
-			if (shuffle) dealerShuffle();
-			System.out.println("Deck: ");
+				throw new IllegalArgumentException("Error: Number of hands by number of games and number of cards per hand exceeds the amount of cards in the deck.");
+			
+			if (shuffle) dealerShuffle(3);
+			System.out.printf("Deck: ");
 			layOutDeck(cardsPerLine);
-			deal(handsToDeal, cardsPerHand);
-			for (int i = 0; i < hands.size(); i++) {
-				System.out.printf("\n\n--- Hand %d ---\n", i + 1);
-				hands.get(i).PrintHand(cardsPerLine);
+			
+			for (int i = 0; i < games; i++){
+				System.out.printf("\n=== Game %d ===\n", i + 1);
+				deckIndex = deal(handsToDeal, cardsPerHand, deckIndex);
+				
+				for (int internal = 0; internal < handsToDeal; internal++) {
+					System.out.printf("\n--- Hand %d ---\n", internal + 1);
+					hands.get(internal).PrintHand(cardsPerLine);
+					System.out.println();
+				}
 			}
 		}
 		catch (IllegalArgumentException e) {
 			System.out.println(e.getMessage());
 		}
 		
-		System.out.printf("\n\n=== Games Complete ===\n");
+		System.out.printf("\n=== Games Complete ===\n");
 		
 		
 	}

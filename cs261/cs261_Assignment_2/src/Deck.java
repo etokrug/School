@@ -29,13 +29,14 @@ public class Deck
     	}
     }
     
-    public void Shuffle() {
-    	for (int i = 0; i < 52; i++) {
+    public void Shuffle(int times) {
+    	int deckSize = deck.size();
+    	for (int i = 0; i < deckSize; i++) {
     		int cardSwapFrom = 0;
     		int cardSwapTo = 0;
 	    	while (cardSwapFrom == cardSwapTo) {
-		    	cardSwapFrom = ThreadLocalRandom.current().nextInt(0, 52);
-		    	cardSwapTo = ThreadLocalRandom.current().nextInt(0, 52);
+		    	cardSwapFrom = ThreadLocalRandom.current().nextInt(0, deckSize);
+		    	cardSwapTo = ThreadLocalRandom.current().nextInt(0, deckSize);
 	    	}
 	    	
 	    	Card cardSwapFromHolder;
@@ -46,6 +47,9 @@ public class Deck
 	    	
 	    	deck.set(cardSwapFrom, cardSwapToHolder);
 	    	deck.set(cardSwapTo, cardSwapFromHolder);
+    	}
+    	if (times > 0){
+    		Shuffle(--times);
     	}
     }
     
