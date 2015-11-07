@@ -3,7 +3,9 @@
  *
  *       Filename:  Assignment_4.c
  *
- *    Description:  
+ *    Description: This program takes input in the form of integers from a user
+ *                 then it converts it to either big endian or little endian format
+ *                 based on the most important bits
  *
  *        Version:  1.0
  *        Created:  11/6/2015
@@ -23,7 +25,7 @@ int* breakByteSections(int bigOrLittleEndian, int bytesToBreak, int* holdingArra
 int getBytesToBreak(int* arrayToAlter);
 void printArrayInHex(int* holdingArray, int arraySize);
 void printValueInHex(int hexInt);
-int generateFinalInt(int* holdingArray, int arraySize);
+int generateFinalInt(int* holdingArray, int arraySize, int bigEndian);
 void printMain(int bigEndian, int* holdingArray, int arraySize, int finalInt);
 
 int main() {
@@ -42,17 +44,22 @@ int main() {
 
     while (!halt) {
         bigEndian = bigOrLittleEndian();
-        numberOfInts = getBytesToBreak(intsToWork);
+        if (bigEndian == -1) {
+            halt = 1;
+        }
+        else {
+            numberOfInts = getBytesToBreak(intsToWork);
 
-        int i = 0;
-        for (i; i < numberOfInts; i++) {
-            if (intsToWork[i] == 0) {
-                halt = 1;
-            }
-            else {
-                breakByteSections(bigEndian, intsToWork[i], byteSections);
-                finalInt = generateFinalInt(byteSections, arraySize);
-                printMain(bigEndian, byteSections, arraySize, finalInt);
+            int i = 0;
+            for (i; i < numberOfInts; i++) {
+                if (intsToWork[i] == 0) {
+                    halt = 1;
+                }
+                else {
+                    breakByteSections(bigEndian, intsToWork[i], byteSections);
+                    finalInt = generateFinalInt(byteSections, arraySize, bigEndian);
+                    printMain(bigEndian, byteSections, arraySize, finalInt);
+                }
             }
         }
     }
@@ -65,6 +72,7 @@ int bigOrLittleEndian(){
     int userInp = 0;
     int clear = 0;
     printf("Output in big endian or little endian format? Type a number from below.\n");
+    printf("0.) exit.\n");
     printf("1.) byte order: big-endian.\n");
     printf("2.) byte order: little-endian.\n");
     printf("Input number: ");
@@ -72,6 +80,9 @@ int bigOrLittleEndian(){
     while ((clear = getchar()) != EOF && clear != '\n');
 
     switch (userInp){
+    case 0:
+        return -1;
+        break;
     case 1:
         return 1;
         break;
@@ -88,16 +99,18 @@ int bigOrLittleEndian(){
 int* breakByteSections(int bigOrLittleEndian, int bytesToBreak, int* holdingArray) {
     int oneByteMask = 255; // 1111 1111
     int oneByteHolder = 0;
+    int pushInt = 0;
     int bitMoves = 0;
     int i = 0;
     int j = 3;
 
     // if the user chose little-endian
-    if (bigOrLittleEndian == 0) {
+    if (bigOrLittleEndian) {
         for (i; i < 4; i++){
             bitMoves = j * 8;
             oneByteHolder = oneByteMask << bitMoves;
-            holdingArray[i] = bytesToBreak & oneByteHolder; 
+            pushInt = bytesToBreak & oneByteHolder;
+            holdingArray[i] = pushInt >> bitMoves; 
             j--;
         }
     }
@@ -105,7 +118,8 @@ int* breakByteSections(int bigOrLittleEndian, int bytesToBreak, int* holdingArra
         for (i= 3; i >= 0; i--) {
             bitMoves = j * 8;
             oneByteHolder = oneByteMask << bitMoves;
-            holdingArray[i] = bytesToBreak & oneByteHolder;
+            pushInt = bytesToBreak & oneByteHolder;
+            holdingArray[i] = pushInt >> bitMoves;
             j--;
         }
     }
@@ -113,13 +127,31 @@ int* breakByteSections(int bigOrLittleEndian, int bytesToBreak, int* holdingArra
     return holdingArray;
 }
 
-int generateFinalInt(int* holdingArray, int arraySize){
+int generateFinalInt(int* holdingArray, int arraySize, int bigEndian){
     int returnInt = 0;
-    int i = 0;
-    for (i; i < arraySize; i++){
-        returnInt = returnInt | holdingArray[i];
+    int trueArraySize = 0;
+    int p = 0;
+    for (p; p < arraySize; p++) {
+        if (holdingArray[p] != 0) {
+            trueArraySize++;
+        }
     }
+    int bitMoves = 0;
+    int i = 0;
+    if (bigEndian) {
+        i = arraySize - trueArraySize;
+        for (i; i < arraySize; i++){
+            returnInt = returnInt | holdingArray[i];
+            returnInt = i + 1 == arraySize ? returnInt : returnInt << 8;
+        }
+    }
+    else {
+        for (i; i < trueArraySize; i++) {
+            returnInt = returnInt | holdingArray[i];
+            returnInt = i + 1 == trueArraySize ? returnInt : returnInt << 8;
+        }
 
+    }
     return returnInt;
 }
 
@@ -146,8 +178,7 @@ void printMain(int bigEndian, int* holdingArray, int arraySize, int finalInt) {
     printArrayInHex(holdingArray, arraySize);
     printf("\nFinal Int: ");
     printValueInHex(finalInt);
-    printf("\nb10 Format: %d\n\n", finalInt);
-
+    printf("\n\n");
 }
 
 void printValueInHex(int hexInt) {

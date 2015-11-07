@@ -1,0 +1,36 @@
+/*
+ * =====================================================================================
+ *
+ *       Filename:  KnownIssues.txt
+ *
+ *    Description: This program takes input in the form of integers from a user
+ *                 then it converts it to either big endian or little endian format
+ *                 based on the most important bits
+ *
+ *        Version:  1.0
+ *        Created:  11/6/2015
+ *       Revision:  NONE
+ *       Compiler:  gcc
+ *
+ *         Author:  William Brown
+ *          Class:  CS 201
+ *      Professor:  Ashis Chatterjee
+ *   Organization:  PCC
+ *
+ * =====================================================================================
+ */
+
+Hello Professor Chatterjee,
+
+I have included my code and the executable as well as a the algorithm
+flowchart.
+
+I'm very interested to hear your feedback on this one because it was a bit tougher.
+
+Overall the idea of the assignment was interesting and understandable but I
+got bogged down in the mechanics of bit shifting.
+
+Thank you,
+
+-William
+
