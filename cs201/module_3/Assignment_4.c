@@ -18,29 +18,40 @@
  * =====================================================================================
  */
 #include <stdio.h>
-//int* invertBits(int* bitsToFlip, int arraySize);
-//int* addOneBitToBitArray(int* bitsToAddTo, int arraySize);
-//void printBinaryArray(int* binaryArray, int arraySize);
-//int* convertDecToBinary(int converter, int* allNumbers, int arraySize);
-//int getByteSet(int converter, int bytesToShift);
-//int mask(int start, int end);
-//int addExtractedBits(int numberToExtract, int mask, int maskBegin);
 int bigOrLittleEndian();
 int* breakByteSections(int bigOrLittleEndian, int bytesToBreak, int* holdingArray);
+int getBytesToBreak(int* arrayToAlter);
+void printArrayInHex(int* holdingArray, int arraySize);
+void printValueInHex(int hexInt);
+int generateFinalInt(int* holdingArray, int arraySize);
+void printMain(int bigEndian, int* holdingArray, int arraySize, int finalInt);
 
 int main() {
     // Main set of declarations here
-    //int arraySize = 8;
-    //int numberArray[arraySize - 1];
-    //int maskBegin = 3;
-    //int maskEnd = 4;
-    //int output = 0;
-    int inputInt = 0;
+    int max = 50;
+    int arraySize = 4;
     int halt = 0;
-    int byteSections[4];
-    
+    int bytesToBreak = 0;
+    int byteSections[arraySize + 1];
+    int bigEndian = 0; // If this is 1 then it's big if not then small
+    int intsToWork[max];
+    int numberOfInts = 0;
+    int finalInt = 0;
+
     // Main input here
 
+    while (!halt) {
+        bigEndian = bigOrLittleEndian();
+        numberOfInts = getBytesToBreak(intsToWork);
+
+        int i = 0;
+        for (i; i < numberOfInts; i++) {
+            breakByteSections(bigEndian, intsToWork[i], byteSections);
+            finalInt = generateFinalInt(byteSections, arraySize);
+
+        }
+
+    }
     
     return 0;
 }
@@ -70,17 +81,18 @@ int bigOrLittleEndian(){
 
 int* breakByteSections(int bigOrLittleEndian, int bytesToBreak, int* holdingArray) {
     int oneByteMask = 255; // 1111 1111
+    int i = 0;
     int j = 3;
 
     // if the user chose little-endian
     if (bigOrLittleEndian == 0) {
-        for (int i = 0; i < 4; i++){
+        for (i; i < 4; i++){
             holdingArray[i] = bytesToBreak & (oneByteMask << (j * 8)); 
             j--;
         }
     }
     else {
-        for (int i = 3; i >= 0; i--) {
+        for (i= 3; i >= 0; i--) {
             holdingArray[i] = bytesToBreak & (oneByteMask << (j * 8));
         }
     }
@@ -88,150 +100,70 @@ int* breakByteSections(int bigOrLittleEndian, int bytesToBreak, int* holdingArra
     return holdingArray;
 }
 
-/* 
-// This extracts sets byte by byte from a number.
-// The sets are then operated on with a mask and shifted to the right
-// Usage: addExtractedBits(0010 0100 0001 0000, 3, 4)
-// -> first byte:  0010 0100
-// -> masked:      0000 0000
-// -> shifted:     0000 0000
-// -> second byte: 0001 0000
-// -> masked:      0001 0000
-// -> shifted:     0000 0010
-// -> first byte + second byte = 0 + 2
-// -> return value = 2
-int addExtractedBits(int numberToExtract, int maskBegin, int maskEnd) {
+int generateFinalInt(int* holdingArray, int arraySize){
+    int returnInt = 0;
     int i = 0;
-    int bitLoop = 8;
-    int returnInt = 0;
-    int holderInt = 0;
-    int maskInt = mask(maskBegin, maskEnd);
-    for (i; i < 4; i++) {
-        holderInt = getByteSet(numberToExtract, i);
-        holderInt = holderInt & maskInt;
-        holderInt = holderInt >> maskBegin;
-        returnInt += holderInt;
+    for (i; i < arraySize; i++){
+        returnInt = returnInt | holdingArray[i];
     }
+
     return returnInt;
 }
 
- 
-// Main body of the decimal to binary converter.
-// Steps:
-// 1.) Creates a usable int array
-// 2.) Checks if input decimal is negative, if so it converts it
-//      to a positive integer for usage purposes
-// 3.) Initializes values in the array with 0
-// 4.) Runs a loop to input all of the values of the binary representation into the array
-// 5.) If the integer was negative it inverts the bits and adds one to make a Two's Compliment
-int* convertDecToBinary(int converter, int* allNumbers, int arraySize) {
-    // Initialize the n-bit int arrays we'll be using to handle the conversions
-    int numbersLen = arraySize - 1;
-    int remainder;
-    int negative = 0;
-    
-    // If the number is negative switch it to positive for handling.
-    // Mark the negative bool as true.
-    if (converter < 0) {
-        negative = 1;
-        converter *= -1;
-    }
-    
-    // Initizalize the values of the n-bit array
-    int initializeInt = 0;
-    for (initializeInt; initializeInt < numbersLen; initializeInt++) {
-        allNumbers[initializeInt] = 0;
-    }
-    // This sets the quotient equal to the decimal number.
-    // This is done so that it can be later manipulated into the correct number.
-    remainder = converter;
-
-    // Main body of the program here.
-    // Loads the temporary array with the final values if positive.
-    // Loads the temporary arry with the inverted values if negative.
-    int temp = numbersLen;
-    while(remainder > 0){
-        allNumbers[temp--] = remainder % 2;
-        remainder /= 2;
-    }
-
-    if (negative) {
-        invertBits(allNumbers, arraySize);
-        addOneBitToBitArray(allNumbers, arraySize);
-    }
-
-    return allNumbers;
-}
-
-/// This creates a bitmask starting at a specified bit position (7<-0)
-// Usage: mask(3, 4) returns 0001 1000
-int mask(int start, int end) {
-    int i = start;
-    int maskHolder = 0;
-    int returnInt = 0;
-    for (i; i <=  end; i++) {
-        maskHolder = 1 << i;
-        returnInt = returnInt | maskHolder;
-    }
-    return returnInt;
-}
-
-// This returns a specified byte set from an integer.
-// Usage: getByteSet(0010 0100 0000 0000, 1) returns 0010 0100
-int getByteSet(int converter, int bytesToShift) {
-    int returnInt = converter >> bytesToShift * 8;
-    return returnInt;
-}
-
-// Invert the bits if you're working with a negative number
-int* invertBits(int* bitsToFlip, int arraySize) {
-    //int bitLen = arraySize - 1;
+void printArrayInHex(int* holdingArray, int arraySize){
     int i = 0;
     for (i; i < arraySize; i++) {
-        if (bitsToFlip[i] == 0) {
-            bitsToFlip[i] = 1;
-        }
-        else {
-            bitsToFlip[i] = 0;
+        printValueInHex(holdingArray[i]);
+        if (!(i == arraySize - 1)) {
+            printf(", ");
         }
     }
-    return bitsToFlip;
 }
 
-// Add one bit after a negative number has been inverted to create a Two's Compliment
-int* addOneBitToBitArray(int* bitsToAddTo, int arraySize) {
-    int breakBit = 1;
-    int stopper = arraySize - 1;
-    while (stopper >= 0) {
-        if (bitsToAddTo[stopper] == 0) {
-            if (breakBit) {
-                bitsToAddTo[stopper] = 1;
-                breakBit = 0;
-            }
-        }
-        else {
-            bitsToAddTo[stopper] = 0;
-        }
-        if (!breakBit) { break; }
-        stopper--;
+void printMain(int bigEndian, int* holdingArray, int arraySize, int finalInt) {
+    printf("\n");
+    if (bigEndian) {
+        printf("Big-Endian format: \n");
     }
-    return bitsToAddTo;
+    else {
+        printf("Little-Endian format: \n");
+    }
+
+    printf("Hex array broken: ");
+    printArrayInHex(holdingArray, arraySize);
+    printf("\nFinal Int: ");
+    printValueInHex(finalInt);
+    printf("\nb10 Format: %d", finalInt);
+
 }
 
-// Print statement for the binary array to keep with DRY.
-void printBinaryArray(int* binaryArray, int arraySize) {
-    if (!binaryArray) { printf("\nThe binary array passed was empty!\n"); }
-    
-    // space every four bits for clarity.
-    int space = 0;
-    int i = 0;
-    for(i; i < arraySize; i++){
-        if (space == 4) {
-            printf(" ");
-            space = 0;
-        }
-        printf("%d", binaryArray[i]);
-        space++;
-    }
+void printValueInHex(int hexInt) {
+    printf("0x%X", hexInt);
 }
-*/
+
+int getBytesToBreak(int* arrayToAlter) {
+    int max = 50;
+    int halt = 0;
+    int tempInt = 0;
+    char temp[255];
+    printf("Please enter a numeric value then press [enter] if you would like to add another.\n");
+    printf("When you are done entering values just press enter again.\n");
+    printf("If you are done and would like to exit enter 0 as the last value.\n");
+    printf("Enter your numbers:\n");
+
+    int counter = 0;
+    while (!halt) {
+        printf("%d> ", counter + 1);
+        fgets(temp, max - 1, stdin);
+        if (temp[0] == '\n'){
+            halt = 1;
+        }
+        else {
+            sscanf(temp, "%d", &tempInt);
+            arrayToAlter[counter] = tempInt;
+        }
+        counter++;
+    }
+
+    return counter - 1;
+}
