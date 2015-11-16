@@ -23,7 +23,9 @@ public class Library
 	// adds a book to the library
 	public Item addBook(String title, String author, int nPages, String... keywords)
 	{
-		return null;
+		Item newBook = new Book(title, author, nPages, keywords);
+		books().add(newBook);
+		return newBook;
 	}
 	
 	// removes a book from the library

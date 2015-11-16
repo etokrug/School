@@ -4,16 +4,35 @@
 
 package library;
 
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+
 public abstract class Item
 {
 	String title;
+	String itemType;
 	
-	enum itemType {
-		book,
-		album,
-		movie		
+	HashSet<String> kwords = new HashSet<String>();
+
+	// Non-abstract method for all types
+	public int hashCode() {
+		String hashString = title + itemType;
+		return hashString.hashCode();
 	}
 	
-	// abstract methods to be overridden will go here
-
+	public String returnKeyWords() {
+		String returnString = "";
+		if (!this.kwords.isEmpty()) {
+			String addString = "";
+			for (Iterator<String> iter = this.kwords.iterator(); iter.hasNext();) {
+				addString = iter.next();
+				returnString += String.format("{0}{1}", addString, (iter.hasNext() ? ", " : ""));	
+			}
+		}
+		
+		return returnString;
+	}
+	
+	public abstract String toString();
 }
