@@ -1,5 +1,7 @@
 package library;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 
@@ -36,8 +38,14 @@ class MusicAlbum extends Item
 	String returnMembers() {
 		String returnString = "";
 		if (!memberSet.isEmpty()) {
+			ArrayList<String> workingList = new ArrayList<String>();
+			for (Iterator<String> iter = memberSet.iterator(); iter.hasNext();) {
+				workingList.add(iter.next());
+			}
+			Collections.sort(workingList);
+			
 			String addString = "";
-			for (Iterator<String> iter = this.kwords.iterator(); iter.hasNext();) {
+			for (Iterator<String> iter = workingList.iterator(); iter.hasNext();) {
 				addString = iter.next();
 				returnString += String.format("%s%s", addString, (iter.hasNext() ? ", " : ""));	
 			}
@@ -47,13 +55,13 @@ class MusicAlbum extends Item
 	}
 	
 	public String toString() {
-		String rs = String.format("\n-%s-\n", this.lType.toString());
+		String rs = String.format("-Music %s-\n", this.lType.toString());
 		rs += String.format("%-10s%s\n", "band:", this.groupName);
 		rs += String.format("%-10s%d\n", "# songs:", this.tracks);
 		rs += String.format("%-10s", "members:");
 		rs += returnMembers();
 		rs += "\n";
-		rs += String.format("%-10s%s", "title:", this.title);
+		rs += String.format("%-10s%s\n", "title:", this.title);
 		rs += String.format("%-10s", "keywords:");		
 		rs += this.returnKeyWords();
 		rs += "\n\n";

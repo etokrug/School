@@ -7,6 +7,9 @@ package library;
 import java.util.HashSet;
 import java.util.Iterator;
 import library.Library.LibraryType;
+
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 
 public abstract class Item
@@ -24,8 +27,14 @@ public abstract class Item
 	public String returnKeyWords() {
 		String returnString = "";
 		if (!this.kwords.isEmpty()) {
+			ArrayList<String> workingList = new ArrayList<String>();
+			for (Iterator<String> iter = kwords.iterator(); iter.hasNext();) {
+				workingList.add(iter.next());
+			}
+			Collections.sort(workingList);
+
 			String addString = "";
-			for (Iterator<String> iter = this.kwords.iterator(); iter.hasNext();) {
+			for (Iterator<String> iter = workingList.iterator(); iter.hasNext();) {
 				addString = iter.next();
 				returnString += String.format("%s%s", addString, (iter.hasNext() ? ", " : ""));	
 			}

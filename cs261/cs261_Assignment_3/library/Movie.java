@@ -1,5 +1,7 @@
 package library;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 
@@ -35,20 +37,26 @@ class Movie extends Item
 	}
 	
 	String returnCast() {
+		
 		String returnString = "";
 		if (!castSet.isEmpty()) {
+			ArrayList<String> workingList = new ArrayList<String>();
+			for (Iterator<String> iter = castSet.iterator(); iter.hasNext();) {
+				workingList.add(iter.next());
+			}
+			Collections.sort(workingList);
+
 			String addString = "";
-			for (Iterator<String> iter = this.kwords.iterator(); iter.hasNext();) {
+			for (Iterator<String> iter = workingList.iterator(); iter.hasNext();) {
 				addString = iter.next();
 				returnString += String.format("%s%s", addString, (iter.hasNext() ? ", " : ""));	
 			}
 		}
-		
 		return returnString;
 	}
 	
 	public String toString() {
-		String rs = String.format("\n-%s-\n", this.lType.toString());
+		String rs = String.format("-%s-\n", this.lType.toString());
 		rs += String.format("%-10s%s\n", "director:", this.directorName);
 		rs += String.format("%-10s%s\n", "# scenes:", this.scenes);
 		rs += String.format("%-10s", "cast:");

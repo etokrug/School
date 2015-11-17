@@ -92,18 +92,28 @@ public class Library
 	
 	private ArrayList<Item> returnSortedArrayListFromSet(HashSet<Item> set) {
 		ArrayList<Item> returnArray = new ArrayList<Item>();
-		for (Iterator<Item> iter = set.iterator(); iter.hasNext();) {
-			returnArray.add(iter.next());
+		if (set != null) {
+			for (Iterator<Item> iter = set.iterator(); iter.hasNext();) {
+				returnArray.add(iter.next());
+			}
+		
+			Collections.sort(returnArray, Item.ItemTitleComparator);
 		}
-		
-		Collections.sort(returnArray, Item.ItemTitleComparator);
-		
+
 		return returnArray;
+	}
+	
+	private boolean removeFromKeyWordsItem(HashMap<String, HashSet<Item>> kwords, Item toRemove) {
+		boolean returnBool = false;
+		for (Iterator<String> iter = toRemove.kwords.iterator(); iter.hasNext();) {
+			returnBool = kwords.get(iter.next()).remove(toRemove);
+		}
+		return returnBool;
 	}
 	// returns all of the items which have the specified keyword
 	public ArrayList<Item> itemsForKeyword(String keyword)
 	{
-		return returnSortedArrayListFromSet(keywordItems.get(keyword.hashCode()));
+		return returnSortedArrayListFromSet(keywordItems.get(keyword));
 	}
 	
 	// print an item from this library to the output stream provided
@@ -130,14 +140,16 @@ public class Library
 	{
 		boolean removeByTitle = false;
 		boolean removeByAuthor = false;
+		boolean removeFromKwords = false;
 		
 		Book bookItem = Book.class.cast(bookItemsByTitle.get(title));
 		removeByAuthor = bookItemsByAuthor.get(bookItem.author).remove(bookItem);
+		removeFromKwords = removeFromKeyWordsItem(keywordItems, bookItem);
 		if (bookItemsByTitle.remove(bookItem.title) != null) {
 			removeByTitle = true;
 		}
 
-		if (removeByAuthor && removeByTitle) {
+		if (removeByAuthor && removeByTitle && removeFromKwords) {
 			return true;
 		}
 		else {
@@ -194,6 +206,7 @@ public class Library
 		boolean removeByTitle = false;
 		boolean removeByMusician = false;
 		boolean removeByBand = false;
+		boolean removeFromKwords = false;
 		
 		MusicAlbum musicItem = MusicAlbum.class.cast(musicItemsByTitle.get(title));
 		removeByBand = musicItemsByBand.get(musicItem.groupName).remove(musicItem);
@@ -206,7 +219,9 @@ public class Library
 			removeByTitle = true;
 		}
 		
-		if (removeByTitle && removeByMusician && removeByBand) {
+		removeFromKwords = removeFromKeyWordsItem(keywordItems, musicItem);
+		
+		if (removeByTitle && removeByMusician && removeByBand && removeFromKwords) {
 			return true;
 		}
 		else {
@@ -269,6 +284,7 @@ public class Library
 		boolean removeByTitle = false;
 		boolean removeByActor = false;
 		boolean removeByDirector = false;
+		boolean removeFromKwords = false;
 		
 		Movie movieItem = Movie.class.cast(movieItemsByTitle.get(title));
 		removeByDirector = movieItemsByDirector.get(movieItem.directorName).remove(movieItem);
@@ -278,10 +294,12 @@ public class Library
 		}
 		
 		if (movieItemsByTitle.remove(title) != null) {
-			removeByActor = true;
+			removeByTitle = true;
 		}
 		
-		if (removeByTitle && removeByActor && removeByDirector) {
+		removeFromKwords = removeFromKeyWordsItem(keywordItems, movieItem);
+		
+		if (removeByTitle && removeByActor && removeByDirector && removeFromKwords) {
 			return true;
 		}
 		else {
