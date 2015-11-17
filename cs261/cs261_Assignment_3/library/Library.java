@@ -2,14 +2,55 @@ package library;
 
 import java.io.PrintStream;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
 
 public class Library
 {
+	
+	public enum LibraryType {
+		Book,
+		Album,
+		Movie,
+		All
+	}
+	
+	public enum LookupType {
+		// General Lookups
+		Title (LibraryType.All),
+		Keywords (LibraryType.All),
+		// Book specific enums
+		Author (LibraryType.Book),
+		// Album specific enums
+		Band (LibraryType.Album),
+		Musician (LibraryType.Album),
+		// Movie specific enums
+		Director (LibraryType.Movie),
+		Actor (LibraryType.Movie);
+		
+		LibraryType mainLType;
+			
+		LookupType(LibraryType lType) {
+			this.mainLType = lType;
+		}
+	}
+	
+	private HashSet<Item> bookItems  = new HashSet<Item>();
+	private HashSet<Item> albumItems  = new HashSet<Item>();
+	private HashSet<Item> movieItems  = new HashSet<Item>();
+	// I think of this like I would think of an index on a real DB,
+	// there may be more overhead in creating and maintaining it but it'll
+	// drastically reduce the search times
+	private HashMap<HashSet<Item>, Integer> keywordItems  = new HashMap<HashSet<Item>, Integer>();
+
 	// general methods
 	
 	// returns all of the items which have the specified keyword
 	public Collection<Item> itemsForKeyword(String keyword)
 	{
+		Collection<Item> items;
+		
+		
 		return null;
 	}
 	
@@ -41,9 +82,9 @@ public class Library
 	}
 	
 	// returns all of the books in the library
-	public Collection<Item> books()
+	public HashSet<Item> books()
 	{
-		return null;
+		return bookItems;
 	}
 	
 	// music-related methods

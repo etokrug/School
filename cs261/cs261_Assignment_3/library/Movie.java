@@ -3,18 +3,21 @@ package library;
 import java.util.HashSet;
 import java.util.Iterator;
 
+import library.Library.LibraryType;
+
 class Movie extends Item
 {
 	// Movie specific variables
 	String directorName;
 	int scenes = 0;
-	String itemType = "Movie";
+
 	HashSet<String> castSet = new HashSet<String>();
 	
 	Movie(String title, String directorName, int scenes, String... keywords){
 		this.title = title;
 		this.directorName = directorName;
 		this.scenes = scenes;
+		this.lType = LibraryType.Movie;
 		
 		if (keywords.length > 0) {
 			for (int i = 0; i < keywords.length; i++){
@@ -45,7 +48,7 @@ class Movie extends Item
 	}
 	
 	public String toString() {
-		String rs = String.format("\n-{0}-\n", this.itemType);
+		String rs = String.format("\n-{0}-\n", this.lType.toString());
 		rs += String.format("director:\t{0}\n", this.directorName);
 		rs += String.format("# scenes:\t{0}\n", this.scenes);
 		rs += "cast:\t";

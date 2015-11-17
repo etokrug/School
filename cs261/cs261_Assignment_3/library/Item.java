@@ -4,21 +4,20 @@
 
 package library;
 
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import library.Library.LibraryType;
 
 public abstract class Item
 {
 	String title;
-	String itemType;
+	LibraryType lType;
 	
 	HashSet<String> kwords = new HashSet<String>();
 
 	// Non-abstract method for all types
 	public int hashCode() {
-		String hashString = title + itemType;
-		return hashString.hashCode();
+		return this.title.hashCode();
 	}
 	
 	public String returnKeyWords() {
