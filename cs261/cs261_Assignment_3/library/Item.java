@@ -7,6 +7,7 @@ package library;
 import java.util.HashSet;
 import java.util.Iterator;
 import library.Library.LibraryType;
+import java.util.Comparator;
 
 public abstract class Item
 {
@@ -26,7 +27,7 @@ public abstract class Item
 			String addString = "";
 			for (Iterator<String> iter = this.kwords.iterator(); iter.hasNext();) {
 				addString = iter.next();
-				returnString += String.format("{0}{1}", addString, (iter.hasNext() ? ", " : ""));	
+				returnString += String.format("%s%s", addString, (iter.hasNext() ? ", " : ""));	
 			}
 		}
 		
@@ -34,4 +35,13 @@ public abstract class Item
 	}
 	
 	public abstract String toString();
+
+	public static Comparator<Item> ItemTitleComparator = new Comparator<Item>() {
+		public int compare(Item item1, Item item2) {
+			String ItemTitle1 = item1.title.toUpperCase();
+			String ItemTitle2 = item2.title.toUpperCase();
+			
+			return ItemTitle1.compareTo(ItemTitle2);
+		}
+	};
 }

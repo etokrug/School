@@ -1,11 +1,13 @@
 package library;
 
 import java.io.PrintStream;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 
-import com.sun.javafx.css.StyleCacheEntry.Key;
+//import com.sun.javafx.css.StyleCacheEntry.Key;
 
 public class Library
 {
@@ -88,16 +90,26 @@ public class Library
 		}
 	}
 	
+	private ArrayList<Item> returnSortedArrayListFromSet(HashSet<Item> set) {
+		ArrayList<Item> returnArray = new ArrayList<Item>();
+		for (Iterator<Item> iter = set.iterator(); iter.hasNext();) {
+			returnArray.add(iter.next());
+		}
+		
+		Collections.sort(returnArray, Item.ItemTitleComparator);
+		
+		return returnArray;
+	}
 	// returns all of the items which have the specified keyword
-	public HashSet<Item> itemsForKeyword(String keyword)
+	public ArrayList<Item> itemsForKeyword(String keyword)
 	{
-		return keywordItems.get(keyword.hashCode());
+		return returnSortedArrayListFromSet(keywordItems.get(keyword.hashCode()));
 	}
 	
 	// print an item from this library to the output stream provided
 	public void printItem(PrintStream out, Item item)
 	{
-		
+		out.print(item.toString());
 	}
 	
 	// book-related methods
@@ -134,20 +146,20 @@ public class Library
 	}
 	
 	// returns all of the books by the specified author
-	public HashSet<Item> booksByAuthor(String author)
+	public ArrayList<Item> booksByAuthor(String author)
 	{
-		return bookItemsByAuthor.get(author);
+		return returnSortedArrayListFromSet(bookItemsByAuthor.get(author));
 	}
 	
 	// returns all of the books in the library
-	public HashSet<Item> books()
+	public ArrayList<Item> books()
 	{
 		HashSet<Item> newHash = new HashSet<Item>();
 		Iterator<Item> iter = bookItemsByTitle.values().iterator();
 		while (iter.hasNext()) {
 			newHash.add(iter.next());
 		}
-		return newHash;
+		return returnSortedArrayListFromSet(newHash);
 	}
 	
 	// music-related methods
@@ -203,26 +215,26 @@ public class Library
 	}
 
 	// returns all of the music albums by the specified band
-	public HashSet<Item> musicByBand(String band)
+	public ArrayList<Item> musicByBand(String band)
 	{
-		return musicItemsByBand.get(band);
+		return returnSortedArrayListFromSet(musicItemsByBand.get(band));
 	}
 	
 	// returns all of the music albums by the specified musician
-	public HashSet<Item> musicByMusician(String musician)
+	public ArrayList<Item> musicByMusician(String musician)
 	{
-		return musicItemsByMusician.get(musician);
+		return returnSortedArrayListFromSet(musicItemsByMusician.get(musician));
 	}
 	
 	// returns all of the music albums in the library
-	public HashSet<Item> musicAlbums()
+	public ArrayList<Item> musicAlbums()
 	{
 		HashSet<Item> newHash = new HashSet<Item>();
 		Iterator<Item> iter = musicItemsByTitle.values().iterator();
 		while (iter.hasNext()) {
 			newHash.add(iter.next());
 		}
-		return newHash;
+		return returnSortedArrayListFromSet(newHash);
 	}
 	
 	// movie-related methods
@@ -278,25 +290,25 @@ public class Library
 	}
 	
 	// returns all of the movies by the specified director
-	public HashSet<Item> moviesByDirector(String director)
+	public ArrayList<Item> moviesByDirector(String director)
 	{
-		return movieItemsByDirector.get(director);
+		return returnSortedArrayListFromSet(movieItemsByDirector.get(director));
 	}
 	
 	// returns all of the movies by the specified actor
-	public HashSet<Item> moviesByActor(String actor)
+	public ArrayList<Item> moviesByActor(String actor)
 	{
-		return movieItemsByActor.get(actor);
+		return returnSortedArrayListFromSet(movieItemsByActor.get(actor));
 	}
 	
 	// returns all of the movies in the library
-	public HashSet<Item> movies()
+	public ArrayList<Item> movies()
 	{
 		HashSet<Item> newHash = new HashSet<Item>();
 		Iterator<Item> iter = movieItemsByTitle.values().iterator();
 		while (iter.hasNext()) {
 			newHash.add(iter.next());
 		}
-		return newHash;
+		return returnSortedArrayListFromSet(newHash);
 	}	
 }

@@ -39,7 +39,7 @@ class MusicAlbum extends Item
 			String addString = "";
 			for (Iterator<String> iter = this.kwords.iterator(); iter.hasNext();) {
 				addString = iter.next();
-				returnString += String.format("{0}{1}", addString, (iter.hasNext() ? ", " : ""));	
+				returnString += String.format("%s%s", addString, (iter.hasNext() ? ", " : ""));	
 			}
 		}
 		
@@ -47,14 +47,14 @@ class MusicAlbum extends Item
 	}
 	
 	public String toString() {
-		String rs = String.format("\n-{0}-\n", this.lType.toString());
-		rs += String.format("band:\t{0}\n", this.groupName);
-		rs += String.format("# songs:\t{0}\n", this.tracks);
-		rs += "members:\t";
+		String rs = String.format("\n-%s-\n", this.lType.toString());
+		rs += String.format("%-10s%s\n", "band:", this.groupName);
+		rs += String.format("%-10s%d\n", "# songs:", this.tracks);
+		rs += String.format("%-10s", "members:");
 		rs += returnMembers();
 		rs += "\n";
-		rs += String.format("title:\t{0}\n", this.title);
-		rs += "keywords:\t";		
+		rs += String.format("%-10s%s", "title:", this.title);
+		rs += String.format("%-10s", "keywords:");		
 		rs += this.returnKeyWords();
 		rs += "\n\n";
 		return rs;

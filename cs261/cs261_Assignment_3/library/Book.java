@@ -23,11 +23,11 @@ class Book extends Item
 	}
 
 	public String toString() {
-		String rs = String.format("\n-{0}-\n", this.lType.toString());
-		rs += String.format("author:\t{0}\n", this.author);
-		rs += String.format("# pages:\t{0}\n", this.nPages);
-		rs += String.format("title:\t{0}\n", this.title);
-		rs += "keywords:\t";		
+		String rs = String.format("\n-%s-\n", this.lType.toString());
+		rs += String.format("%-10s%-10s\n", "author:", this.author);
+		rs += String.format("%-10s%-10d\n", "# pages:", this.nPages);
+		rs += String.format("%-10s%-10s\n", "title:", this.title);
+		rs += String.format("%-10s", "keywords:");		
 		rs += this.returnKeyWords();
 		rs += "\n\n";
 		return rs;
