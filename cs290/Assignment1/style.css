@@ -1,0 +1,17 @@
+
+
+th.bold {
+    font-weight: bold;
+}
+
+td.italic {
+    font-style: italic;
+}
+
+tr.row1 {
+    background-color: coral;
+}
+
+tr.row2 {
+    background-color: aquamarine;
+}
